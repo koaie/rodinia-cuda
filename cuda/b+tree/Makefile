@@ -1,7 +1,7 @@
 include ../../common/make.config
 
 CUDA_LIB =	-lcuda -lcudart
-CUDA_FLAG = -arch sm_20
+CUDA_FLAG = -arch sm_72
 
 # ====================================================================================================100
 #	END
@@ -60,7 +60,7 @@ C_C = gcc
 #	NVCC
 # ====================================================================================================100
 
-CUD_C = nvcc
+CUD_C = $(CUDA_DIR)/bin/nvcc
 # OMP_FLAG = 	-Xcompiler paste_one_here
 
 # ====================================================================================================100
@@ -91,7 +91,7 @@ b+tree.out:	./main.o \
 		./util/timer/timer.o \
 		./util/num/num.o \
 		./util/cuda/cuda.o
-	$(C_C)	./main.o \
+	$(CUD_C)	./main.o \
 			./kernel/kernel_gpu_cuda_wrapper.o \
 			./kernel/kernel_gpu_cuda_wrapper_2.o \
 			./util/timer/timer.o \
