@@ -121,11 +121,11 @@ void bpnn_train_cuda(BPNN *net, float *eo, float *eh)
   
   
   bpnn_layerforward_CUDA<<< grid, threads >>>(input_cuda,
-	                                          output_hidden_cuda,
-											  input_hidden_cuda,
-											  hidden_partial_sum,
-											  in,
-											  hid);
+	                                      output_hidden_cuda,
+					      input_hidden_cuda,
+					      hidden_partial_sum,
+					      in,
+					      hid);
  
   cudaThreadSynchronize();
   
