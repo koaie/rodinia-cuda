@@ -1,5 +1,10 @@
+include ../../../common/make.config
+
+NVCC := $(CUDA_DIR)/bin/nvcc
+
+INCLUDE := $(CUDA_DIR)/include
+
 CC = gcc
-NVCC = nvcc
 
 DEFS += \
 		-DGPU_TIMER \
@@ -8,7 +13,7 @@ DEFS += \
 NVCCFLAGS += -I../common \
 			 -O3 \
 			 -use_fast_math \
-			 -arch=sm_20 \
+			 -arch=sm_72 \
 			 -lm \
 			 $(SPACE)
 
