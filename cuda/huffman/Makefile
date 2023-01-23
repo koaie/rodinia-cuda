@@ -1,9 +1,15 @@
-NVCC=nvcc
+include ../../common/make.config
+
+NVCC := $(CUDA_DIR)/bin/nvcc
+
+INCLUDE := $(CUDA_DIR)/include
+
+#NVCC=nvcc
 CC = g++
 
-CUDA_INCLUDEPATH=/usr/local/cuda-6.5/include
+#CUDA_INCLUDEPATH=/usr/local/cuda-6.5/include
 
-NVCC_OPTS=-O3 -arch=sm_35 -Xcompiler -m64 -g -G
+NVCC_OPTS=-O3 -arch=sm_72 -Xcompiler -g -G
 
 GCC_OPTS=-O3 -Wall -Wextra -m64
 
@@ -35,7 +41,7 @@ pack_kernels.o: pack_kernels.cu
 	$(NVCC) -c pack_kernels.cu $(NVCC_OPTS)
 
 main_test_cu.o: main_test_cu.cu cutil.h
-	$(NVCC) $(TESTING) -c main_test_cu.cu $(NVCC_OPTS) -I $(CUDA_INCLUDEPATH) 
+	$(NVCC) $(TESTING) -c main_test_cu.cu $(NVCC_OPTS) -I $(INCLUDE) 
 
 .o:.cpp
 	$(CC) ++ $(GCC_OPTS) -c $@ -o $<
