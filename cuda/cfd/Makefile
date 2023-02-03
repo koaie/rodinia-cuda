@@ -5,9 +5,11 @@ CC := $(CUDA_DIR)/bin/nvcc
 INCLUDE := $(CUDA_DIR)/include
 
 # https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#virtual-architecture-feature-list
-SM := compute_72
+SM := compute_60
 
-CUDA_SDK_PATH := $(SDK_DIR)
+CC_ARGS := -Xptxas -v -O3 --gpu-architecture=$(SM) --gpu-code=$(SM)
+
+SDK_ARGS := -I$(SDK_DIR)/Common -L$(SDK_DIR)/lib $(CUTIL_LIB)
 
 # Determine the correct version of the cutil library
 CUTIL_LIB = # -lcutil
@@ -21,17 +23,17 @@ endif
 all: euler3d euler3d_double  pre_euler3d  pre_euler3d_double 
 
 euler3d: euler3d.cu
-	$(CC) $(KERNEL_DIM) -O2 -Xptxas -v --gpu-architecture=$(SM) --gpu-code=$(SM) euler3d.cu -o euler3d -I$(CUDA_SDK_PATH)/common/inc  -L$(CUDA_SDK_PATH)/lib $(CUTIL_LIB)
+	$(CC) $(KERNEL_DIM) -O2 -Xptxas -v --gpu-architecture=$(SM) --gpu-code=$(SM) euler3d.cu -o euler3d $(SDK_ARGS)
 
 euler3d_double: euler3d_double.cu
-	$(CC) -Xptxas -v -O3 --gpu-architecture=$(SM) --gpu-code=$(SM) euler3d_double.cu -o euler3d_double -I$(CUDA_SDK_PATH)/common/inc  -L$(CUDA_SDK_PATH)/lib $(CUTIL_LIB)
+	$(CC) $(CC_ARGS) euler3d_double.cu -o euler3d_double $(SDK_ARGS)
 
 
 pre_euler3d: pre_euler3d.cu
-	$(CC) -Xptxas -v -O3 --gpu-architecture=$(SM) --gpu-code=$(SM) pre_euler3d.cu -o pre_euler3d -I$(CUDA_SDK_PATH)/common/inc  -L$(CUDA_SDK_PATH)/lib $(CUTIL_LIB)
+	$(CC) $(CC_ARGS) pre_euler3d.cu -o pre_euler3d $(SDK_ARGS)
 
 pre_euler3d_double: pre_euler3d_double.cu
-	$(CC) -Xptxas -v -O3 --gpu-architecture=$(SM) --gpu-code=$(SM) pre_euler3d_double.cu -o pre_euler3d_double -I$(CUDA_SDK_PATH)/common/inc  -L$(CUDA_SDK_PATH)/lib $(CUTIL_LIB)
+	$(CC) $(CC_ARGS) pre_euler3d_double.cu -o pre_euler3d_double $(SDK_ARGS)
 
 
 clean:
